@@ -1,0 +1,40 @@
+## 3. Yêu cầu chức năng cốt lõi (Core Functional Requirements)
+
+### A. Dành cho Khách hàng
+
+1. **Tìm kiếm & Lọc:** Tìm theo vị trí (GPS), giá cả, loại hình dịch vụ và đánh giá.
+2. **Xem trạng thái thời gian thực:** Hiển thị rõ khung giờ/phòng nào còn trống (Real-time availability).
+3. **Đặt chỗ & Thanh toán:** Hỗ trợ đặt nhanh và thanh toán qua ví điện tử/thẻ/tiền mặt.
+4. **Quản lý lịch hẹn:** Xem lại lịch sử, hủy hoặc dời lịch (theo quy định).
+5. **Thông báo (Push Notifications):** Nhắc lịch trước 30 phút hoặc thông báo khi đặt chỗ thành công.
+
+### B. Dành cho Đối tác (Chủ cơ sở)
+
+1. **Quản lý danh mục:** Đăng tải hình ảnh, mô tả dịch vụ và giá cả.
+2. **Quản lý lịch (Calendar Management):** Đóng/mở khung giờ hoạt động linh hoạt.
+3. **Xác nhận đơn hàng:** Chấp nhận hoặc từ chối yêu cầu đặt chỗ từ khách.
+4. **Báo cáo doanh thu:** Thống kê theo ngày/tuần/tháng.
+
+---
+
+## 4. Quy tắc nghiệp vụ (Business Rules) - "Phần xương sống"
+
+Để app vận hành mượt mà, bạn cần quy định rõ:
+
+* **Quy định hủy lịch:** Khách được hủy miễn phí trước bao nhiêu tiếng? Sau đó sẽ bị phạt bao nhiêu %?
+* **Xác thực:** Khách hàng có cần đặt cọc trước không? (Ví dụ: Đặt cọc  giá trị đơn hàng).
+* **Thời gian giữ chỗ:** Nếu thanh toán chuyển khoản, khách có bao nhiêu phút để hoàn tất trước khi lịch bị giải phóng?
+
+## 5. Yêu cầu phi chức năng (Non-functional Requirements)
+
+* **Tốc độ:** Thời gian phản hồi trang tìm kiếm phải dưới 2 giây.
+* **Độ tin cậy:** Hệ thống phải cập nhật trạng thái trống lịch ngay lập tức để tránh 2 người đặt cùng 1 chỗ tại 1 thời điểm.
+* **Giao diện (UI/UX):** Đơn giản, khách hàng phải hoàn thành đặt chỗ trong tối đa 3-4 bước chạm.
+
+---
+
+### Ví dụ về một User Story đơn giản:
+
+> "Là một **khách hàng**, tôi muốn **thấy các khung giờ còn trống** để tôi có thể **chủ động chọn lịch phù hợp mà không cần gọi điện hỏi chủ cửa hàng**."
+
+Bạn đang nhắm đến mảng booking nào cụ thể không (ví dụ: đặt phòng khách sạn, đặt sân bóng, hay đặt lịch bác sĩ)? Nếu có, tôi sẽ giúp bạn viết các **quy tắc nghiệp vụ (Business Rules)** "khó nhằn" nhất của mảng đó!
