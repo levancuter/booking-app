@@ -4,7 +4,7 @@ Dự án Go khởi đầu với cấu trúc chuẩn, tích hợp PostgreSQL data
 
 ## Công nghệ sử dụng
 
-- **Go 1.23.6** - Ngôn ngữ lập trình
+- **Go 1.25** - Ngôn ngữ lập trình
 - **PostgreSQL** - Database
 - **Gorilla Mux** - HTTP router
 - **lib/pq** - PostgreSQL driver
@@ -39,7 +39,7 @@ go-starter-project/
 
 ## Yêu cầu
 
-- Go 1.23 trở lên
+- Go 1.25 
 - PostgreSQL 14+ (hoặc Docker)
 - Make (optional)
 
@@ -69,28 +69,7 @@ DB_NAME=go_starter_db
 DB_SSLMODE=disable
 ```
 
-### 3. Khởi động PostgreSQL bằng Docker (khuyên dùng)
-
-```bash
-docker-compose up -d
-```
-
-Lệnh này sẽ khởi động:
-- PostgreSQL trên port `5432`
-- pgAdmin trên port `5050` (http://localhost:5050)
-  - Email: `admin@admin.com`
-  - Password: `admin`
-
-### 4. Hoặc cài đặt PostgreSQL thủ công
-
-Nếu không dùng Docker, cài đặt PostgreSQL và tạo database:
-
-```bash
-createdb go_starter_db
-psql go_starter_db < internal/database/migrations/001_create_users_table.sql
-```
-
-### 5. Tải dependencies
+### 3. Tải dependencies
 
 ```bash
 go mod download
@@ -243,9 +222,9 @@ go test ./...
 
 ## Các bước tiếp theo
 
-- [x] PostgreSQL integration
-- [x] CRUD operations
-- [x] Docker support
+- [✓] PostgreSQL integration
+- [✓] CRUD operations
+- [✓] Docker support
 - [ ] Add authentication/authorization (JWT)
 - [ ] Add middleware (logging, CORS, rate limiting)
 - [ ] Add validation

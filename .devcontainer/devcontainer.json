@@ -1,0 +1,26 @@
+{
+  "name": "Booking App Dev Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces",
+  "features": {
+    // Tuỳ: thêm các feature chính thức của Dev Containers
+    // "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    // "ghcr.io/devcontainers/features/python:1": { "version": "3.11" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "ms-python.python",
+        "ms-dotnettools.csdevkit",
+        "ms-toolsai.jupyter",
+        "ms-vscode-remote.remote-containers",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg"
+      ]
+    }
+  },
+  "postCreateCommand": "echo 'Dev container ready'",
+  "remoteUser": "vscode"
+}
