@@ -13,7 +13,7 @@ Dự án Go khởi đầu với cấu trúc chuẩn, tích hợp PostgreSQL data
 ## Cấu trúc dự án
 
 ```
-go-starter-project/
+booking-app/
 ├── cmd/
 │   └── server/
 │       └── main.go              # Entry point của ứng dụng
@@ -49,7 +49,7 @@ go-starter-project/
 
 ```bash
 git clone <repository-url>
-cd go-starter-project
+cd booking-app/apps/backend
 ```
 
 ### 2. Copy environment variables

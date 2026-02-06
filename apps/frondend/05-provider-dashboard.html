@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý doanh nghiệp - BookMe Partner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B2C;
+            --primary-dark: #E5521A;
+            --secondary: #2C3E50;
+            --accent: #FFD93D;
+            --text: #1A1A1A;
+            --text-light: #666;
+            --bg: #F5F7FA;
+            --white: #FFFFFF;
+            --border: #E5E5E5;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --danger: #EF4444;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 2rem 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .business-name {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .sidebar-nav {
+            padding: 2rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section-title {
+            padding: 0 2rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 107, 44, 0.15);
+            border-left: 4px solid var(--primary);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--white);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .page-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .notification-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--bg);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .notification-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: var(--white);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg);
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .user-profile-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.primary {
+            background: rgba(255, 107, 44, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+        }
+
+        .stat-icon.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .stat-trend.up {
+            color: var(--success);
+        }
+
+        .stat-trend.down {
+            color: var(--danger);
+        }
+
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Charts & Tables */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .view-all {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        /* Bookings Table */
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .bookings-table thead {
+            background: var(--bg);
+        }
+
+        .bookings-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .bookings-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bookings-table tr:hover {
+            background: var(--bg);
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .customer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+        }
+
+        .customer-name {
+            font-weight: 600;
+        }
+
+        .customer-phone {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: var(--bg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.2rem;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Revenue Chart */
+        .chart-container {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 1rem 0;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--bg);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chart-bar:hover {
+            background: var(--primary);
+        }
+
+        .chart-bar.active {
+            background: var(--primary);
+        }
+
+        .chart-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .chart-label {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-action-btn {
+            flex: 1;
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+        }
+
+        .quick-action-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .quick-action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 107, 44, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Upcoming Bookings */
+        .upcoming-item {
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .upcoming-time {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .upcoming-service {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .upcoming-customer {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 968px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">BookMe</div>
+            <div class="business-name">30Shine Premium</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Tổng quan</div>
+                <div class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📅</span>
+                    <span>Lịch đặt</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📈</span>
+                    <span>Báo cáo</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Quản lý</div>
+                <div class="nav-item">
+                    <span class="nav-icon">✂️</span>
+                    <span>Dịch vụ</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">👥</span>
+                    <span>Nhân viên</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⏰</span>
+                    <span>Lịch làm việc</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💰</span>
+                    <span>Giá & Khuyến mãi</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Khách hàng</div>
+                <div class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Khách hàng</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⭐</span>
+                    <span>Đánh giá</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Tin nhắn</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Cài đặt</div>
+                <div class="nav-item">
+                    <span class="nav-icon">🏢</span>
+                    <span>Thông tin cơ sở</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Cài đặt</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">❓</span>
+                    <span>Trợ giúp</span>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">Dashboard</h1>
+            <div class="top-actions">
+                <button class="notification-btn">
+                    🔔
+                    <span class="notification-badge">5</span>
+                </button>
+                <div class="user-profile-btn">
+                    <div class="user-avatar"></div>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="quick-actions">
+                <button class="quick-action-btn">
+                    <div class="quick-action-icon">➕</div>
+                    <div>
+                        <div style="font-weight: 700;">Thêm lịch đặt mới</div>
+                        <div style="font-size: 0.85rem; color: var(--text-light);">Đặt lịch cho khách hàng</div>
+                    </div>
+                </button>
+                <button class="quick-action-btn">
+                    <div class="quick-action-icon">✂️</div>
+                    <div>
+                        <div style="font-weight: 700;">Thêm dịch vụ</div>
+                        <div style="font-size: 0.85rem; color: var(--text-light);">Tạo dịch vụ mới</div>
+                    </div>
+                </button>
+                <button class="quick-action-btn">
+                    <div class="quick-action-icon">👥</div>
+                    <div>
+                        <div style="font-weight: 700;">Quản lý nhân viên</div>
+                        <div style="font-size: 0.85rem; color: var(--text-light);">Thêm/sửa nhân viên</div>
+                    </div>
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon primary">📅</div>
+                        <div class="stat-trend up">
+                            ↑ 12.5%
+                        </div>
+                    </div>
+                    <div class="stat-value">234</div>
+                    <div class="stat-label">Lịch đặt tháng này</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon success">💰</div>
+                        <div class="stat-trend up">
+                            ↑ 8.2%
+                        </div>
+                    </div>
+                    <div class="stat-value">45.2M</div>
+                    <div class="stat-label">Doanh thu tháng này</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon info">👥</div>
+                        <div class="stat-trend up">
+                            ↑ 15.8%
+                        </div>
+                    </div>
+                    <div class="stat-value">1,234</div>
+                    <div class="stat-label">Khách hàng mới</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon warning">⭐</div>
+                        <div class="stat-trend down">
+                            ↓ 0.1
+                        </div>
+                    </div>
+                    <div class="stat-value">4.9</div>
+                    <div class="stat-label">Đánh giá trung bình</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Doanh thu 7 ngày qua</h2>
+                        <select style="padding: 0.5rem; border-radius: 8px; border: 2px solid var(--border);">
+                            <option>7 ngày qua</option>
+                            <option>30 ngày qua</option>
+                            <option>Tháng này</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <div>
+                            <div class="chart-bar" style="height: 180px;">
+                                <div class="chart-value">5.2M</div>
+                            </div>
+                            <div class="chart-label">T2</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar active" style="height: 220px;">
+                                <div class="chart-value">6.8M</div>
+                            </div>
+                            <div class="chart-label">T3</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 150px;">
+                                <div class="chart-value">4.5M</div>
+                            </div>
+                            <div class="chart-label">T4</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 200px;">
+                                <div class="chart-value">6.2M</div>
+                            </div>
+                            <div class="chart-label">T5</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 280px;">
+                                <div class="chart-value">8.9M</div>
+                            </div>
+                            <div class="chart-label">T6</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 250px;">
+                                <div class="chart-value">7.8M</div>
+                            </div>
+                            <div class="chart-label">T7</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 190px;">
+                                <div class="chart-value">5.8M</div>
+                            </div>
+                            <div class="chart-label">CN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Lịch hẹn hôm nay</h2>
+                        <a href="#" class="view-all">Xem tất cả →</a>
+                    </div>
+                    <div>
+                        <div class="upcoming-item">
+                            <div class="upcoming-time">09:00 - 09:45</div>
+                            <div class="upcoming-service">Cắt tóc nam</div>
+                            <div class="upcoming-customer">Nguyễn Văn A • 0901234567</div>
+                        </div>
+                        <div class="upcoming-item">
+                            <div class="upcoming-time">10:30 - 11:30</div>
+                            <div class="upcoming-service">Nhuộm tóc + Cắt</div>
+                            <div class="upcoming-customer">Trần Minh B • 0907654321</div>
+                        </div>
+                        <div class="upcoming-item">
+                            <div class="upcoming-time">14:00 - 14:45</div>
+                            <div class="upcoming-service">Gội đầu massage</div>
+                            <div class="upcoming-customer">Lê Thị C • 0912345678</div>
+                        </div>
+                        <div class="upcoming-item">
+                            <div class="upcoming-time">15:30 - 16:15</div>
+                            <div class="upcoming-service">Cắt tóc nam cao cấp</div>
+                            <div class="upcoming-customer">Phạm Văn D • 0908765432</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Lịch đặt gần đây</h2>
+                    <a href="#" class="view-all">Xem tất cả →</a>
+                </div>
+                <table class="bookings-table">
+                    <thead>
+                        <tr>
+                            <th>Mã đặt</th>
+                            <th>Khách hàng</th>
+                            <th>Dịch vụ</th>
+                            <th>Ngày & Giờ</th>
+                            <th>Nhân viên</th>
+                            <th>Giá trị</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#BK12345</td>
+                            <td>
+                                <div class="customer-info">
+                                    <div class="customer-avatar"></div>
+                                    <div>
+                                        <div class="customer-name">Nguyễn Văn A</div>
+                                        <div class="customer-phone">0901234567</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Cắt tóc nam</td>
+                            <td>10/02/2025 - 10:00</td>
+                            <td>Anh Tuấn</td>
+                            <td><strong>150.000₫</strong></td>
+                            <td><span class="status-tag status-confirmed">✓ Đã xác nhận</span></td>
+                            <td>
+                                <button class="action-btn" title="Xem">👁️</button>
+                                <button class="action-btn" title="Sửa">✏️</button>
+                                <button class="action-btn" title="Hủy">✖️</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#BK12344</td>
+                            <td>
+                                <div class="customer-info">
+                                    <div class="customer-avatar" style="background: linear-gradient(135deg, #F093FB, #F5576C);"></div>
+                                    <div>
+                                        <div class="customer-name">Trần Minh B</div>
+                                        <div class="customer-phone">0907654321</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Nhuộm + Cắt</td>
+                            <td>10/02/2025 - 14:00</td>
+                            <td>Anh Minh</td>
+                            <td><strong>450.000₫</strong></td>
+                            <td><span class="status-tag status-pending">⏳ Chờ xác nhận</span></td>
+                            <td>
+                                <button class="action-btn" title="Xem">👁️</button>
+                                <button class="action-btn" title="Xác nhận">✓</button>
+                                <button class="action-btn" title="Hủy">✖️</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#BK12343</td>
+                            <td>
+                                <div class="customer-info">
+                                    <div class="customer-avatar" style="background: linear-gradient(135deg, #FA709A, #FEE140);"></div>
+                                    <div>
+                                        <div class="customer-name">Lê Thị C</div>
+                                        <div class="customer-phone">0912345678</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Gội massage</td>
+                            <td>09/02/2025 - 16:00</td>
+                            <td>Chị Lan</td>
+                            <td><strong>200.000₫</strong></td>
+                            <td><span class="status-tag status-confirmed">✓ Đã xác nhận</span></td>
+                            <td>
+                                <button class="action-btn" title="Xem">👁️</button>
+                                <button class="action-btn" title="Sửa">✏️</button>
+                                <button class="action-btn" title="Hủy">✖️</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Chart bars
+        document.querySelectorAll('.chart-bar').forEach(bar => {
+            bar.addEventListener('click', function() {
+                document.querySelectorAll('.chart-bar').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-module github.com/yourusername/go-starter-project
+module github.com/yourusername/booking-app
 
 go 1.25
 

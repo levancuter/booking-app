@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/yourusername/go-starter-project/internal/models"
+	"github.com/yourusername/booking-app/internal/models"
 )
 
 type UserRepository struct {

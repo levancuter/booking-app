@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMe - Đặt Lịch Dễ Dàng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B2C;
+            --primary-dark: #E5521A;
+            --secondary: #2C3E50;
+            --accent: #FFD93D;
+            --text: #1A1A1A;
+            --text-light: #666;
+            --bg: #FAFAFA;
+            --white: #FFFFFF;
+            --border: #E5E5E5;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(255, 107, 44, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 107, 44, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 6rem 2rem 4rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-content {
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat {
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .stat:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .stat:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .stat h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .stat p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .hero-visual {
+            position: relative;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .booking-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+        }
+
+        .booking-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .search-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .search-field {
+            margin-bottom: 1.2rem;
+        }
+
+        .search-field label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .search-field input,
+        .search-field select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .search-field input:focus,
+        .search-field select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 44, 0.1);
+        }
+
+        .btn-search {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Categories */
+        .categories {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .category-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .category-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover .category-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .category-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .category-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Featured Providers */
+        .featured {
+            background: linear-gradient(135deg, #FFF5F0 0%, #FFF 100%);
+            padding: 5rem 2rem;
+        }
+
+        .featured-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .provider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .provider-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        .provider-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .provider-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .provider-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent);
+            color: var(--secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .provider-info {
+            padding: 1.5rem;
+        }
+
+        .provider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.8rem;
+        }
+
+        .provider-info h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .provider-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .provider-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .provider-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: #F5F5F5;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 2rem;
+            background: var(--secondary);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 107, 44, 0.1);
+            border-radius: 50%;
+        }
+
+        .cta-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .btn-white {
+            background: var(--white);
+            color: var(--secondary);
+        }
+
+        .btn-white:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: #1A1A1A;
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: #999;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h4 {
+            font-family: 'Syne', sans-serif;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #999;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 968px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">BookMe</div>
+            <ul class="nav-links">
+                <li><a href="#categories">Danh mục</a></li>
+                <li><a href="#featured">Nổi bật</a></li>
+                <li><a href="#about">Về chúng tôi</a></li>
+                <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn btn-outline">Đăng nhập</button>
+                <button class="btn btn-primary">Đăng ký</button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Đặt lịch thông minh, trải nghiệm hoàn hảo</h1>
+            <p>Kết nối với hàng nghìn dịch vụ chất lượng cao. Đặt lịch chỉ trong 30 giây, thanh toán an toàn, hoàn tiền dễ dàng.</p>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">Khám phá ngay</button>
+                <button class="btn btn-outline" style="font-size: 1.1rem; padding: 1rem 2rem;">Đối tác</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <h3>12K+</h3>
+                    <p>Dịch vụ</p>
+                </div>
+                <div class="stat">
+                    <h3>50K+</h3>
+                    <p>Khách hàng</p>
+                </div>
+                <div class="stat">
+                    <h3>4.9★</h3>
+                    <p>Đánh giá</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="booking-card">
+                <h3>Tìm kiếm dịch vụ</h3>
+                <div class="search-tabs">
+                    <button class="tab active">Salon & Spa</button>
+                    <button class="tab">Sức khỏe</button>
+                    <button class="tab">Giải trí</button>
+                </div>
+                <div class="search-field">
+                    <label>Dịch vụ bạn cần</label>
+                    <input type="text" placeholder="Cắt tóc, massage, yoga...">
+                </div>
+                <div class="search-field">
+                    <label>Khu vực</label>
+                    <select>
+                        <option>Quận 1, TP.HCM</option>
+                        <option>Quận 2, TP.HCM</option>
+                        <option>Quận 3, TP.HCM</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <label>Ngày & giờ</label>
+                    <input type="datetime-local">
+                </div>
+                <button class="btn btn-primary btn-search">Tìm kiếm</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="categories" id="categories">
+        <div class="section-header">
+            <h2>Danh mục phổ biến</h2>
+            <p>Khám phá hàng nghìn dịch vụ chất lượng cao</p>
+        </div>
+        <div class="category-grid">
+            <div class="category-card">
+                <div class="category-icon">💇</div>
+                <h3>Salon & Spa</h3>
+                <p>2,458 dịch vụ</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🏋️</div>
+                <h3>Gym & Fitness</h3>
+                <p>1,234 dịch vụ</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🏥</div>
+                <h3>Y tế & Sức khỏe</h3>
+                <p>3,567 dịch vụ</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🎯</div>
+                <h3>Giải trí</h3>
+                <p>892 dịch vụ</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🍽️</div>
+                <h3>Nhà hàng</h3>
+                <p>4,123 địa điểm</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🏠</div>
+                <h3>Gia đình</h3>
+                <p>1,678 dịch vụ</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">📚</div>
+                <h3>Giáo dục</h3>
+                <p>2,341 khóa học</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🚗</div>
+                <h3>Ô tô</h3>
+                <p>987 dịch vụ</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured" id="featured">
+        <div class="featured-container">
+            <div class="section-header">
+                <h2>Đối tác nổi bật</h2>
+                <p>Được hàng nghìn khách hàng tin tưởng</p>
+            </div>
+            <div class="provider-grid">
+                <div class="provider-card">
+                    <div class="provider-image">
+                        <div class="provider-badge">⭐ Yêu thích</div>
+                    </div>
+                    <div class="provider-info">
+                        <div class="provider-header">
+                            <div>
+                                <h3>30Shine Premium</h3>
+                            </div>
+                            <div class="rating">4.9 ⭐</div>
+                        </div>
+                        <div class="provider-meta">
+                            <span>📍 Quận 1</span>
+                            <span>💰 150K - 500K</span>
+                        </div>
+                        <div class="provider-tags">
+                            <span class="tag">Cắt tóc nam</span>
+                            <span class="tag">Gội đầu</span>
+                            <span class="tag">Nhuộm</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">1,234 lượt đặt • Mở cửa đến 22:00</p>
+                    </div>
+                </div>
+
+                <div class="provider-card">
+                    <div class="provider-image" style="background: linear-gradient(135deg, #667EEA, #764BA2);">
+                        <div class="provider-badge">✓ Đã xác minh</div>
+                    </div>
+                    <div class="provider-info">
+                        <div class="provider-header">
+                            <div>
+                                <h3>Zen Spa & Wellness</h3>
+                            </div>
+                            <div class="rating">5.0 ⭐</div>
+                        </div>
+                        <div class="provider-meta">
+                            <span>📍 Quận 3</span>
+                            <span>💰 300K - 1.5M</span>
+                        </div>
+                        <div class="provider-tags">
+                            <span class="tag">Massage</span>
+                            <span class="tag">Tắm trắng</span>
+                            <span class="tag">Chăm sóc da</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">856 lượt đặt • Mở cửa đến 21:00</p>
+                    </div>
+                </div>
+
+                <div class="provider-card">
+                    <div class="provider-image" style="background: linear-gradient(135deg, #F093FB, #F5576C);">
+                        <div class="provider-badge">🔥 Hot</div>
+                    </div>
+                    <div class="provider-info">
+                        <div class="provider-header">
+                            <div>
+                                <h3>Elite Fitness Center</h3>
+                            </div>
+                            <div class="rating">4.8 ⭐</div>
+                        </div>
+                        <div class="provider-meta">
+                            <span>📍 Quận 2</span>
+                            <span>💰 500K - 2M</span>
+                        </div>
+                        <div class="provider-tags">
+                            <span class="tag">Gym</span>
+                            <span class="tag">Yoga</span>
+                            <span class="tag">PT 1-1</span>
+                        </div>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">2,145 lượt đặt • Mở cửa 24/7</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-container">
+            <h2>Bạn là chủ doanh nghiệp?</h2>
+            <p>Tham gia BookMe để tiếp cận hàng nghìn khách hàng tiềm năng mỗi ngày</p>
+            <div class="cta-buttons">
+                <button class="btn btn-white" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Đăng ký đối tác</button>
+                <button class="btn btn-outline" style="color: white; border-color: white; font-size: 1.1rem; padding: 1rem 2.5rem;">Tìm hiểu thêm</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>BookMe</h3>
+                <p>Nền tảng đặt lịch hàng đầu Việt Nam. Kết nối khách hàng với hàng nghìn dịch vụ chất lượng cao.</p>
+                <div class="social-links">
+                    <a href="#">FB</a>
+                    <a href="#">IG</a>
+                    <a href="#">TW</a>
+                    <a href="#">YT</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Về BookMe</h4>
+                <ul>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                    <li><a href="#">Đối tác</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Hỗ trợ</h4>
+                <ul>
+                    <li><a href="#">Trung tâm trợ giúp</a></li>
+                    <li><a href="#">Chính sách</a></li>
+                    <li><a href="#">Điều khoản</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Danh mục</h4>
+                <ul>
+                    <li><a href="#">Salon & Spa</a></li>
+                    <li><a href="#">Gym & Fitness</a></li>
+                    <li><a href="#">Y tế</a></li>
+                    <li><a href="#">Giải trí</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 BookMe. Bản quyền thuộc về BookMe Vietnam.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Animate on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.category-card, .provider-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

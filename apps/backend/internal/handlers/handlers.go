@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/yourusername/go-starter-project/internal/models"
-	"github.com/yourusername/go-starter-project/internal/repository"
+	"github.com/yourusername/booking-app/internal/models"
+	"github.com/yourusername/booking-app/internal/repository"
 )
 
 type UserHandler struct {

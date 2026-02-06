@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 services:
   app:
     build:
@@ -12,7 +12,7 @@ services:
     # Chạy dev bên trong container app
     # ports: ["3000:3000"] # nếu cần expose app ra host
     env_file:
-      - ../.env
+      - ../apps/backend/.env
     # Đặt tên network chung để app ↔ db giao tiếp
     networks:
       - devnet
@@ -26,7 +26,7 @@ services:
       POSTGRES_DB: appdb
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ../internal/database/migrations/001_create_users_table.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ../apps/database/migrations/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     ports:
       - "5432:5432"  # tuỳ chọn: expose ra host (dành cho công cụ ngoài VS Code)
     healthcheck:

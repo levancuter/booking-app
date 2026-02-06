@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm kiếm dịch vụ - BookMe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B2C;
+            --primary-dark: #E5521A;
+            --secondary: #2C3E50;
+            --accent: #FFD93D;
+            --text: #1A1A1A;
+            --text-light: #666;
+            --bg: #FAFAFA;
+            --white: #FFFFFF;
+            --border: #E5E5E5;
+            --success: #10B981;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        /* Header - Same as homepage */
+        header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* Search Bar */
+        .search-bar-container {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .search-bar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-input-group {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 44, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .filter-btn {
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--white);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar Filters */
+        .sidebar {
+            height: fit-content;
+            position: sticky;
+            top: 140px;
+        }
+
+        .filter-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .filter-section h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-option:hover {
+            padding-left: 0.5rem;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 0.8rem;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .count {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .price-range {
+            margin-top: 1rem;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-inputs input {
+            flex: 1;
+            padding: 0.6rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            position: relative;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .range-slider::before {
+            content: '';
+            position: absolute;
+            left: 20%;
+            right: 20%;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        /* Results Header */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-info h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .results-info p {
+            color: var(--text-light);
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .sort-btn {
+            padding: 0.6rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--white);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .sort-btn.active,
+        .sort-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Service Cards */
+        .services-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            position: relative;
+        }
+
+        .service-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--white);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .favorite-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .service-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.8rem;
+        }
+
+        .service-header h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .provider-name {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            height: fit-content;
+        }
+
+        .service-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .feature-icon {
+            color: var(--primary);
+        }
+
+        .service-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .price-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .price-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .book-btn {
+            padding: 0.8rem 2rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .book-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 44, 0.3);
+        }
+
+        /* Quick Filters */
+        .quick-filters {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-filter {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--white);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .quick-filter.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .quick-filter:hover {
+            border-color: var(--primary);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--white);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .page-btn:hover:not(.active) {
+            border-color: var(--primary);
+        }
+
+        @media (max-width: 968px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            .service-card {
+                grid-template-columns: 1fr;
+            }
+
+            .service-image {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">BookMe</div>
+        </nav>
+    </header>
+
+    <div class="search-bar-container">
+        <div class="search-bar-content">
+            <div class="search-input-group">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Tìm kiếm dịch vụ, cơ sở..." value="Cắt tóc nam">
+            </div>
+            <div class="search-input-group">
+                <span class="search-icon">📍</span>
+                <input type="text" placeholder="Khu vực" value="Quận 1, TP.HCM">
+            </div>
+            <div class="search-input-group">
+                <span class="search-icon">📅</span>
+                <input type="date" value="2025-02-10">
+            </div>
+            <button class="filter-btn">
+                <span>⚙️</span>
+                Bộ lọc
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="filter-section">
+                <h3>Danh mục</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat1" checked>
+                    <label for="cat1">
+                        <span>Cắt tóc nam</span>
+                        <span class="count">(456)</span>
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat2">
+                    <label for="cat2">
+                        <span>Gội đầu dưỡng sinh</span>
+                        <span class="count">(234)</span>
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat3">
+                    <label for="cat3">
+                        <span>Nhuộm tóc</span>
+                        <span class="count">(189)</span>
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat4">
+                    <label for="cat4">
+                        <span>Uốn tóc</span>
+                        <span class="count">(156)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Giá</h3>
+                <div class="price-range">
+                    <div class="price-inputs">
+                        <input type="number" placeholder="Từ" value="0">
+                        <input type="number" placeholder="Đến" value="500000">
+                    </div>
+                    <div class="range-slider"></div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Đánh giá</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="star5">
+                    <label for="star5">
+                        <span>⭐⭐⭐⭐⭐</span>
+                        <span class="count">(89)</span>
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="star4">
+                    <label for="star4">
+                        <span>⭐⭐⭐⭐ trở lên</span>
+                        <span class="count">(234)</span>
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="star3">
+                    <label for="star3">
+                        <span>⭐⭐⭐ trở lên</span>
+                        <span class="count">(345)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Tiện ích</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="util1">
+                    <label for="util1">
+                        <span>Đặt lịch nhanh</span>
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="util2">
+                    <label for="util2">
+                        <span>Thanh toán online</span>
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="util3">
+                    <label for="util3">
+                        <span>Đã xác minh</span>
+                    </label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="util4">
+                    <label for="util4">
+                        <span>Hoàn tiền dễ dàng</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <div class="results-header">
+                <div class="results-info">
+                    <h2>Dịch vụ cắt tóc nam</h2>
+                    <p>Tìm thấy 456 kết quả tại Quận 1, TP.HCM</p>
+                </div>
+                <div class="sort-options">
+                    <button class="sort-btn active">Phổ biến</button>
+                    <button class="sort-btn">Giá thấp</button>
+                    <button class="sort-btn">Đánh giá cao</button>
+                    <button class="sort-btn">Gần nhất</button>
+                </div>
+            </div>
+
+            <div class="quick-filters">
+                <button class="quick-filter active">Tất cả</button>
+                <button class="quick-filter">Mở cửa ngay</button>
+                <button class="quick-filter">Có slot hôm nay</button>
+                <button class="quick-filter">Giảm giá</button>
+                <button class="quick-filter">Đối tác ưu tiên</button>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image" style="background: linear-gradient(135deg, #FF6B2C, #E5521A);">
+                        <div class="service-badge">-20% hôm nay</div>
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="service-info">
+                        <div class="service-header">
+                            <div>
+                                <h3>Cắt tóc nam cao cấp</h3>
+                                <p class="provider-name">30Shine Premium - Chi nhánh Nguyễn Huệ</p>
+                                <div class="service-features">
+                                    <span class="feature">
+                                        <span class="feature-icon">⏱</span>
+                                        45 phút
+                                    </span>
+                                    <span class="feature">
+                                        <span class="feature-icon">📍</span>
+                                        1.2 km
+                                    </span>
+                                    <span class="feature">
+                                        <span class="feature-icon">✓</span>
+                                        Đã xác minh
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="rating">4.9 ⭐</div>
+                        </div>
+                        <p class="service-description">
+                            Trải nghiệm cắt tóc đẳng cấp với stylist chuyên nghiệp, tư vấn kiểu tóc phù hợp. Bao gồm gội đầu massage thư giãn.
+                        </p>
+                        <div class="service-footer">
+                            <div class="price-info">
+                                <span class="price">150.000₫</span>
+                                <span class="price-label">Giá gốc: 200.000₫</span>
+                            </div>
+                            <button class="book-btn">Đặt lịch ngay</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-image" style="background: linear-gradient(135deg, #667EEA, #764BA2);">
+                        <div class="service-badge">⭐ Ưu tiên</div>
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="service-info">
+                        <div class="service-header">
+                            <div>
+                                <h3>Cắt + Gội + Massage</h3>
+                                <p class="provider-name">Barber House - Lê Lợi</p>
+                                <div class="service-features">
+                                    <span class="feature">
+                                        <span class="feature-icon">⏱</span>
+                                        60 phút
+                                    </span>
+                                    <span class="feature">
+                                        <span class="feature-icon">📍</span>
+                                        800m
+                                    </span>
+                                    <span class="feature">
+                                        <span class="feature-icon">💳</span>
+                                        Thanh toán online
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="rating">5.0 ⭐</div>
+                        </div>
+                        <p class="service-description">
+                            Combo trọn gọi với stylist nam chuyên nghiệp. Gội đầu massage 15 phút cùng với dịch vụ chăm sóc da mặt cơ bản.
+                        </p>
+                        <div class="service-footer">
+                            <div class="price-info">
+                                <span class="price">250.000₫</span>
+                                <span class="price-label">Mở cửa đến 22:00</span>
+                            </div>
+                            <button class="book-btn">Đặt lịch ngay</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-image" style="background: linear-gradient(135deg, #F093FB, #F5576C);">
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="service-info">
+                        <div class="service-header">
+                            <div>
+                                <h3>Cắt tóc Gentleman Style</h3>
+                                <p class="provider-name">Elite Barbers - Pasteur</p>
+                                <div class="service-features">
+                                    <span class="feature">
+                                        <span class="feature-icon">⏱</span>
+                                        50 phút
+                                    </span>
+                                    <span class="feature">
+                                        <span class="feature-icon">📍</span>
+                                        1.5 km
+                                    </span>
+                                    <span class="feature">
+                                        <span class="feature-icon">🔥</span>
+                                        Hot deal
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="rating">4.8 ⭐</div>
+                        </div>
+                        <p class="service-description">
+                            Phong cách lịch lãm cho quý ông. Bao gồm tư vấn kiểu tóc, cắt tạo kiểu và chăm sóc râu chuyên nghiệp.
+                        </p>
+                        <div class="service-footer">
+                            <div class="price-info">
+                                <span class="price">300.000₫</span>
+                                <span class="price-label">Có slot từ 14:00</span>
+                            </div>
+                            <button class="book-btn">Đặt lịch ngay</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-image" style="background: linear-gradient(135deg, #FA709A, #FEE140);">
+                        <div class="service-badge">Mới</div>
+                        <button class="favorite-btn">♡</button>
+                    </div>
+                    <div class="service-info">
+                        <div class="service-header">
+                            <div>
+                                <h3>Cắt tóc express - 30 phút</h3>
+                                <p class="provider-name">Quick Cut - Đồng Khởi</p>
+                                <div class="service-features">
+                                    <span class="feature">
+                                        <span class="feature-icon">⏱</span>
+                                        30 phút
+                                    </span>
+                                    <span class="feature">
+                                        <span class="feature-icon">📍</span>
+                                        500m
+                                    </span>
+                                    <span class="feature">
+                                        <span class="feature-icon">⚡</span>
+                                        Không cần hẹn
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="rating">4.7 ⭐</div>
+                        </div>
+                        <p class="service-description">
+                            Dịch vụ cắt tóc nhanh dành cho người bận rộn. Không cần đặt lịch trước, phục vụ tận tình và chuyên nghiệp.
+                        </p>
+                        <div class="service-footer">
+                            <div class="price-info">
+                                <span class="price">100.000₫</span>
+                                <span class="price-label">Walk-in friendly</span>
+                            </div>
+                            <button class="book-btn">Đặt lịch ngay</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">...</button>
+                <button class="page-btn">23</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Toggle favorite
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.textContent = this.textContent === '♡' ? '♥' : '♡';
+                this.style.color = this.textContent === '♥' ? '#FF6B2C' : '';
+            });
+        });
+
+        // Quick filters
+        document.querySelectorAll('.quick-filter').forEach(filter => {
+            filter.addEventListener('click', function() {
+                document.querySelectorAll('.quick-filter').forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Sort buttons
+        document.querySelectorAll('.sort-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Service card click
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('favorite-btn') && 
+                    !e.target.classList.contains('book-btn')) {
+                    console.log('Navigate to service detail');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

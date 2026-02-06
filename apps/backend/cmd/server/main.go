@@ -8,9 +8,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/yourusername/go-starter-project/internal/database"
-	"github.com/yourusername/go-starter-project/internal/handlers"
-	"github.com/yourusername/go-starter-project/internal/repository"
+	"github.com/yourusername/booking-app/internal/database"
+	"github.com/yourusername/booking-app/internal/handlers"
+	"github.com/yourusername/booking-app/internal/repository"
 )
 
 func main() {
@@ -44,7 +44,7 @@ func main() {
 	// Đăng ký các routes
 	router.HandleFunc("/", handlers.HomeHandler).Methods("GET")
 	router.HandleFunc("/api/health", handlers.HealthCheckHandler).Methods("GET")
-	
+
 	// User routes
 	router.HandleFunc("/api/users", userHandler.GetUsers).Methods("GET")
 	router.HandleFunc("/api/users/{id}", userHandler.GetUser).Methods("GET")

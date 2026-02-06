@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết dịch vụ - BookMe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B2C;
+            --primary-dark: #E5521A;
+            --secondary: #2C3E50;
+            --accent: #FFD93D;
+            --text: #1A1A1A;
+            --text-light: #666;
+            --bg: #FAFAFA;
+            --white: #FFFFFF;
+            --border: #E5E5E5;
+            --success: #10B981;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: transparent;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Gallery */
+        .gallery {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            height: 500px;
+        }
+
+        .main-image {
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #FF6B2C, #E5521A);
+            position: relative;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .gallery-image {
+            border-radius: 16px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+        }
+
+        .view-all-photos {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-all-photos:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+        }
+
+        /* Left Column */
+        .service-detail {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .detail-header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .provider-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .provider-link:hover {
+            text-decoration: underline;
+        }
+
+        .rating-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .big-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .review-count {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .price-badge {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .price-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 0.3rem;
+        }
+
+        .price {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .section p {
+            line-height: 1.8;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 12px;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+        }
+
+        .feature-text h4 {
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            color: var(--secondary);
+        }
+
+        .feature-text p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* Staff Section */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .staff-card {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .staff-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .staff-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255, 107, 44, 0.05), rgba(255, 107, 44, 0.1));
+        }
+
+        .staff-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            margin: 0 auto 1rem;
+        }
+
+        .staff-card h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .staff-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .staff-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--white);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        /* Reviews */
+        .reviews-summary {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .rating-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .rating-bar span {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .bar {
+            height: 80px;
+            background: var(--border);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary);
+            transition: height 0.5s;
+        }
+
+        .review-item {
+            padding: 1.5rem;
+            background: var(--bg);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer-info {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F093FB, #F5576C);
+        }
+
+        .reviewer-details h4 {
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .reviewer-details p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .review-rating {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.3rem 0.7rem;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .review-text {
+            line-height: 1.7;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .review-images {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .review-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+        }
+
+        /* Right Column - Booking Card */
+        .booking-card {
+            position: sticky;
+            top: 100px;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid var(--border);
+            height: fit-content;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .booking-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .booking-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .booking-field label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .booking-field input,
+        .booking-field select {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .booking-field input:focus,
+        .booking-field select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 44, 0.1);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .time-slot {
+            padding: 0.7rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--white);
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .time-slot:hover {
+            border-color: var(--primary);
+        }
+
+        .time-slot.selected {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .time-slot.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .booking-summary {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .summary-row.total {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--primary);
+            padding-top: 0.8rem;
+            border-top: 2px solid var(--border);
+            margin-top: 0.8rem;
+        }
+
+        .book-now-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .book-now-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 44, 0.4);
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 968px) {
+            .gallery {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .image-grid {
+                display: none;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-card {
+                position: relative;
+                top: 0;
+            }
+
+            .features-grid,
+            .staff-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <button class="back-btn">← Quay lại</button>
+            <div class="logo">BookMe</div>
+            <div style="width: 100px;"></div>
+        </nav>
+    </header>
+
+    <div class="gallery">
+        <div class="main-image">
+            <button class="view-all-photos">📷 Xem tất cả ảnh (12)</button>
+        </div>
+        <div class="image-grid">
+            <div class="gallery-image"></div>
+            <div class="gallery-image" style="background: linear-gradient(135deg, #F093FB, #F5576C);"></div>
+            <div class="gallery-image" style="background: linear-gradient(135deg, #FA709A, #FEE140);"></div>
+            <div class="gallery-image" style="background: linear-gradient(135deg, #30CFD0, #330867);"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="service-detail">
+            <div class="detail-header">
+                <div>
+                    <h1>Cắt tóc nam cao cấp</h1>
+                    <a href="#" class="provider-link">
+                        30Shine Premium - Chi nhánh Nguyễn Huệ →
+                    </a>
+                    <div class="rating-info">
+                        <div class="big-rating">
+                            <span>⭐ 4.9</span>
+                        </div>
+                        <div class="review-count">
+                            <strong>1,234 đánh giá</strong><br>
+                            <span>2,456 lượt đặt</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="price-badge">
+                    <div class="price-label">Giá chỉ từ</div>
+                    <div class="price">150.000₫</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Mô tả dịch vụ</h2>
+                <p>
+                    Trải nghiệm dịch vụ cắt tóc nam đẳng cấp với đội ngũ stylist chuyên nghiệp, 
+                    được đào tạo bài bản theo tiêu chuẩn quốc tế. Chúng tôi tư vấn kiểu tóc phù hợp 
+                    với khuôn mặt và phong cách cá nhân của bạn.
+                </p>
+                <p>
+                    Dịch vụ bao gồm: Tư vấn kiểu tóc, cắt tóc chuyên nghiệp, gội đầu massage thư giãn, 
+                    tạo kiểu và hoàn thiện. Sử dụng các sản phẩm chăm sóc tóc cao cấp từ Mỹ và Nhật Bản.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Điểm nổi bật</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">⏱️</div>
+                        <div class="feature-text">
+                            <h4>Thời gian</h4>
+                            <p>45 - 60 phút</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✂️</div>
+                        <div class="feature-text">
+                            <h4>Chuyên gia</h4>
+                            <p>8 stylist sẵn sàng</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💳</div>
+                        <div class="feature-text">
+                            <h4>Thanh toán</h4>
+                            <p>Tiền mặt & online</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔄</div>
+                        <div class="feature-text">
+                            <h4>Hoàn tiền</h4>
+                            <p>Hủy trước 2 giờ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Chọn stylist</h2>
+                <div class="staff-grid">
+                    <div class="staff-card">
+                        <div class="staff-avatar"></div>
+                        <h4>Bất kỳ</h4>
+                        <p>Tự động chọn</p>
+                        <span class="staff-rating">⭐ 4.9</span>
+                    </div>
+                    <div class="staff-card selected">
+                        <div class="staff-avatar" style="background: linear-gradient(135deg, #F093FB, #F5576C);"></div>
+                        <h4>Anh Tuấn</h4>
+                        <p>7 năm kinh nghiệm</p>
+                        <span class="staff-rating">⭐ 5.0</span>
+                    </div>
+                    <div class="staff-card">
+                        <div class="staff-avatar" style="background: linear-gradient(135deg, #FA709A, #FEE140);"></div>
+                        <h4>Anh Minh</h4>
+                        <p>5 năm kinh nghiệm</p>
+                        <span class="staff-rating">⭐ 4.8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Đánh giá từ khách hàng</h2>
+                <div class="reviews-summary">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <div style="font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; color: var(--primary);">4.9</div>
+                        <div style="color: var(--text-light);">⭐⭐⭐⭐⭐</div>
+                        <div style="color: var(--text-light); margin-top: 0.5rem;">Dựa trên 1,234 đánh giá</div>
+                    </div>
+                    <div class="reviews-grid">
+                        <div class="rating-bar">
+                            <span>5⭐</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 85%;"></div>
+                            </div>
+                            <span>850</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span>4⭐</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 60%;"></div>
+                            </div>
+                            <span>250</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span>3⭐</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 30%;"></div>
+                            </div>
+                            <span>80</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span>2⭐</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 15%;"></div>
+                            </div>
+                            <span>30</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span>1⭐</span>
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 10%;"></div>
+                            </div>
+                            <span>24</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar"></div>
+                            <div class="reviewer-details">
+                                <h4>Nguyễn Văn A</h4>
+                                <p>Đã sử dụng dịch vụ 5 lần • 2 ngày trước</p>
+                            </div>
+                        </div>
+                        <div class="review-rating">5.0 ⭐</div>
+                    </div>
+                    <p class="review-text">
+                        Dịch vụ tuyệt vời! Anh Tuấn cắt tóc rất tỉ mỉ và tư vấn nhiệt tình. 
+                        Salon sạch sẽ, không gian thoải mái. Sẽ quay lại lần sau.
+                    </p>
+                    <div class="review-images">
+                        <div class="review-image"></div>
+                        <div class="review-image" style="background: linear-gradient(135deg, #FA709A, #FEE140);"></div>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar" style="background: linear-gradient(135deg, #30CFD0, #330867);"></div>
+                            <div class="reviewer-details">
+                                <h4>Trần Minh B</h4>
+                                <p>Khách hàng mới • 1 tuần trước</p>
+                            </div>
+                        </div>
+                        <div class="review-rating">5.0 ⭐</div>
+                    </div>
+                    <p class="review-text">
+                        Lần đầu đến đây và rất hài lòng. Giá cả hợp lý, chất lượng tốt. 
+                        Đặt lịch qua app rất tiện, không phải chờ đợi.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-card">
+            <h3>Đặt lịch ngay</h3>
+            
+            <div class="booking-field">
+                <label>Chọn ngày</label>
+                <input type="date" value="2025-02-10">
+            </div>
+
+            <div class="booking-field">
+                <label>Chọn giờ</label>
+                <div class="time-slots">
+                    <button class="time-slot">08:00</button>
+                    <button class="time-slot">09:00</button>
+                    <button class="time-slot selected">10:00</button>
+                    <button class="time-slot">11:00</button>
+                    <button class="time-slot">14:00</button>
+                    <button class="time-slot">15:00</button>
+                    <button class="time-slot disabled">16:00</button>
+                    <button class="time-slot">17:00</button>
+                    <button class="time-slot">18:00</button>
+                </div>
+            </div>
+
+            <div class="booking-field">
+                <label>Họ và tên</label>
+                <input type="text" placeholder="Nhập họ tên của bạn" value="Nguyễn Văn A">
+            </div>
+
+            <div class="booking-field">
+                <label>Số điện thoại</label>
+                <input type="tel" placeholder="0901234567" value="0901234567">
+            </div>
+
+            <div class="booking-field">
+                <label>Ghi chú (tùy chọn)</label>
+                <input type="text" placeholder="Yêu cầu đặc biệt...">
+            </div>
+
+            <div class="booking-summary">
+                <div class="summary-row">
+                    <span>Dịch vụ</span>
+                    <span>150.000₫</span>
+                </div>
+                <div class="summary-row">
+                    <span>Stylist: Anh Tuấn</span>
+                    <span>+50.000₫</span>
+                </div>
+                <div class="summary-row">
+                    <span>Giảm giá (20%)</span>
+                    <span style="color: var(--success);">-40.000₫</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Tổng cộng</span>
+                    <span>160.000₫</span>
+                </div>
+            </div>
+
+            <button class="book-now-btn">Xác nhận đặt lịch</button>
+            
+            <div class="secure-badge">
+                <span>🔒</span>
+                <span>Thanh toán an toàn & bảo mật</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Time slot selection
+        document.querySelectorAll('.time-slot:not(.disabled)').forEach(slot => {
+            slot.addEventListener('click', function() {
+                document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Staff selection
+        document.querySelectorAll('.staff-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.staff-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Book button
+        document.querySelector('.book-now-btn').addEventListener('click', function() {
+            alert('Chuyển đến trang xác nhận và thanh toán...');
+        });
+    </script>
+</body>
+</html>

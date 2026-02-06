@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMe - Mobile App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #FF6B2C;
+            --primary-dark: #E5521A;
+            --secondary: #2C3E50;
+            --accent: #FFD93D;
+            --text: #1A1A1A;
+            --text-light: #666;
+            --bg: #FAFAFA;
+            --white: #FFFFFF;
+            --border: #E5E5E5;
+            --success: #10B981;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            max-width: 428px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--white);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .location-icon {
+            color: var(--primary);
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #EF4444;
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 0.65rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Search Bar */
+        .search-section {
+            padding: 1rem;
+            background: var(--white);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 0.9rem 1rem;
+            gap: 0.8rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* Categories Slider */
+        .categories-section {
+            padding: 1rem;
+            background: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .view-all {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .categories-scroll {
+            display: flex;
+            gap: 0.8rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .categories-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 70px;
+            padding: 0.8rem;
+            background: var(--bg);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .category-chip.active {
+            background: linear-gradient(135deg, rgba(255, 107, 44, 0.1), rgba(255, 107, 44, 0.05));
+            border-color: var(--primary);
+        }
+
+        .category-chip-icon {
+            font-size: 2rem;
+        }
+
+        .category-chip-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Banner */
+        .banner-section {
+            padding: 0 1rem 1rem;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 20px;
+            padding: 1.5rem;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .banner h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner-btn {
+            background: var(--white);
+            color: var(--primary);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Featured Services */
+        .services-section {
+            padding: 1rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            position: relative;
+        }
+
+        .service-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--white);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .service-content {
+            padding: 1rem;
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .provider-name {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .rating {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .service-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 0.8rem 0;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .service-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .service-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .price {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .book-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 428px;
+            margin: 0 auto;
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(255, 107, 44, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 0.5rem;
+            background: var(--bg);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-action:active {
+            transform: scale(0.95);
+        }
+
+        .quick-action-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 107, 44, 0.2), rgba(255, 107, 44, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .quick-action-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Stories */
+        .stories-section {
+            padding: 1rem;
+            background: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .stories-scroll {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .stories-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .story-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            border: 3px solid var(--primary);
+            padding: 3px;
+        }
+
+        .story-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--white);
+        }
+
+        .story-name {
+            font-size: 0.75rem;
+            max-width: 70px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 429px) {
+            body {
+                box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="location">
+            <span class="location-icon">📍</span>
+            <span>Quận 1, TP.HCM</span>
+        </div>
+        <div class="top-actions">
+            <button class="icon-btn">
+                🔔
+                <span class="notification-badge">3</span>
+            </button>
+            <button class="icon-btn">👤</button>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Tìm kiếm dịch vụ, cơ sở...">
+            <span>⚙️</span>
+        </div>
+    </div>
+
+    <div class="stories-section">
+        <div class="section-header">
+            <h2 class="section-title">Đối tác nổi bật</h2>
+        </div>
+        <div class="stories-scroll">
+            <div class="story-item">
+                <div class="story-avatar">
+                    <div class="story-inner"></div>
+                </div>
+                <div class="story-name">30Shine</div>
+            </div>
+            <div class="story-item">
+                <div class="story-avatar" style="border-color: var(--success);">
+                    <div class="story-inner" style="background: linear-gradient(135deg, #F093FB, #F5576C);"></div>
+                </div>
+                <div class="story-name">Zen Spa</div>
+            </div>
+            <div class="story-item">
+                <div class="story-avatar" style="border-color: var(--accent);">
+                    <div class="story-inner" style="background: linear-gradient(135deg, #FA709A, #FEE140);"></div>
+                </div>
+                <div class="story-name">Elite Gym</div>
+            </div>
+            <div class="story-item">
+                <div class="story-avatar" style="border-color: var(--info);">
+                    <div class="story-inner" style="background: linear-gradient(135deg, #30CFD0, #330867);"></div>
+                </div>
+                <div class="story-name">Barber Co</div>
+            </div>
+            <div class="story-item">
+                <div class="story-avatar" style="border-color: var(--primary);">
+                    <div class="story-inner" style="background: linear-gradient(135deg, #667EEA, #764BA2);"></div>
+                </div>
+                <div class="story-name">Nails Art</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="categories-section">
+        <div class="section-header">
+            <h2 class="section-title">Danh mục</h2>
+            <a href="#" class="view-all">Xem tất cả</a>
+        </div>
+        <div class="categories-scroll">
+            <div class="category-chip active">
+                <div class="category-chip-icon">💇</div>
+                <div class="category-chip-name">Salon</div>
+            </div>
+            <div class="category-chip">
+                <div class="category-chip-icon">🏋️</div>
+                <div class="category-chip-name">Gym</div>
+            </div>
+            <div class="category-chip">
+                <div class="category-chip-icon">🏥</div>
+                <div class="category-chip-name">Y tế</div>
+            </div>
+            <div class="category-chip">
+                <div class="category-chip-icon">🎯</div>
+                <div class="category-chip-name">Giải trí</div>
+            </div>
+            <div class="category-chip">
+                <div class="category-chip-icon">🍽️</div>
+                <div class="category-chip-name">Ăn uống</div>
+            </div>
+            <div class="category-chip">
+                <div class="category-chip-icon">🏠</div>
+                <div class="category-chip-name">Gia đình</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <div class="quick-action">
+            <div class="quick-action-icon">🔥</div>
+            <div class="quick-action-label">Hot deal</div>
+        </div>
+        <div class="quick-action">
+            <div class="quick-action-icon">⚡</div>
+            <div class="quick-action-label">Đặt nhanh</div>
+        </div>
+        <div class="quick-action">
+            <div class="quick-action-icon">📍</div>
+            <div class="quick-action-label">Gần tôi</div>
+        </div>
+        <div class="quick-action">
+            <div class="quick-action-icon">🎫</div>
+            <div class="quick-action-label">Ưu đãi</div>
+        </div>
+    </div>
+
+    <div class="banner-section">
+        <div class="banner">
+            <h3>Giảm 20% cho lần đặt đầu</h3>
+            <p>Áp dụng cho tất cả dịch vụ. Không giới hạn giá trị.</p>
+            <button class="banner-btn">Đặt ngay</button>
+        </div>
+    </div>
+
+    <div class="services-section">
+        <div class="section-header">
+            <h2 class="section-title">Dịch vụ nổi bật</h2>
+            <a href="#" class="view-all">Xem tất cả</a>
+        </div>
+
+        <div class="service-card">
+            <div class="service-image">
+                <div class="service-badge">-20%</div>
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="service-content">
+                <div class="service-header">
+                    <div>
+                        <div class="service-title">Cắt tóc nam cao cấp</div>
+                        <div class="provider-name">30Shine Premium</div>
+                    </div>
+                    <div class="rating">4.9 ⭐</div>
+                </div>
+                <div class="service-meta">
+                    <span>⏱ 45 phút</span>
+                    <span>📍 1.2 km</span>
+                    <span>✓ Đã xác minh</span>
+                </div>
+                <div class="service-footer">
+                    <div class="price">150K</div>
+                    <button class="book-btn">Đặt lịch</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="service-image" style="background: linear-gradient(135deg, #F093FB, #F5576C);">
+                <div class="service-badge">⭐ Hot</div>
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="service-content">
+                <div class="service-header">
+                    <div>
+                        <div class="service-title">Massage toàn thân</div>
+                        <div class="provider-name">Zen Spa & Wellness</div>
+                    </div>
+                    <div class="rating">5.0 ⭐</div>
+                </div>
+                <div class="service-meta">
+                    <span>⏱ 90 phút</span>
+                    <span>📍 800m</span>
+                    <span>💳 Online</span>
+                </div>
+                <div class="service-footer">
+                    <div class="price">450K</div>
+                    <button class="book-btn">Đặt lịch</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-card">
+            <div class="service-image" style="background: linear-gradient(135deg, #FA709A, #FEE140);">
+                <div class="service-badge">Mới</div>
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="service-content">
+                <div class="service-header">
+                    <div>
+                        <div class="service-title">PT 1-1 cá nhân hóa</div>
+                        <div class="provider-name">Elite Fitness Center</div>
+                    </div>
+                    <div class="rating">4.8 ⭐</div>
+                </div>
+                <div class="service-meta">
+                    <span>⏱ 60 phút</span>
+                    <span>📍 1.5 km</span>
+                    <span>🔥 Ưu tiên</span>
+                </div>
+                <div class="service-footer">
+                    <div class="price">600K</div>
+                    <button class="book-btn">Đặt lịch</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Trang chủ</span>
+        </div>
+        <div class="nav-item">
+            <span class="nav-icon">🔍</span>
+            <span class="nav-label">Khám phá</span>
+        </div>
+        <div class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Lịch đặt</span>
+        </div>
+        <div class="nav-item">
+            <span class="nav-icon">❤️</span>
+            <span class="nav-label">Yêu thích</span>
+        </div>
+        <div class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Tài khoản</span>
+        </div>
+    </nav>
+
+    <script>
+        // Bottom navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Categories
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Favorite buttons
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.textContent = this.textContent === '♡' ? '♥' : '♡';
+                this.style.color = this.textContent === '♥' ? '#FF6B2C' : '';
+            });
+        });
+
+        // Prevent scroll when at edges
+        document.querySelectorAll('.categories-scroll, .stories-scroll').forEach(scroll => {
+            scroll.addEventListener('touchmove', function(e) {
+                e.stopPropagation();
+            }, { passive: true });
+        });
+    </script>
+</body>
+</html>
