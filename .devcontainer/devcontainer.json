@@ -5,7 +5,9 @@
   "workspaceFolder": "/workspaces",
   "features": {
     // Tuỳ: thêm các feature chính thức của Dev Containers
-    // "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
     // "ghcr.io/devcontainers/features/python:1": { "version": "3.11" }
   },
   "customizations": {
@@ -17,10 +19,13 @@
         "ms-toolsai.jupyter",
         "ms-vscode-remote.remote-containers",
         "mtxr.sqltools",
-        "mtxr.sqltools-driver-pg"
+        "mtxr.sqltools-driver-pg",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   },
-  "postCreateCommand": "echo 'Dev container ready'",
+  "postCreateCommand": "cd apps/frondend && npm install && cd ../backend && go mod tidy && echo 'Dev container ready'",
   "remoteUser": "vscode"
 }

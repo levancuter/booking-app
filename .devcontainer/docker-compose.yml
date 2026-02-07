@@ -10,7 +10,9 @@ services:
     depends_on:
       - db
     # Chạy dev bên trong container app
-    # ports: ["3000:3000"] # nếu cần expose app ra host
+    ports:
+      - "3000:3000" # Frontend
+      - "8080:8080" # Backend
     env_file:
       - ../apps/backend/.env
     # Đặt tên network chung để app ↔ db giao tiếp
@@ -26,11 +28,11 @@ services:
       POSTGRES_DB: appdb
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ../apps/database/migrations/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ../apps/database/migrations/init_official.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     ports:
-      - "5432:5432"  # tuỳ chọn: expose ra host (dành cho công cụ ngoài VS Code)
+      - "5432:5432" # tuỳ chọn: expose ra host (dành cho công cụ ngoài VS Code)
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d appdb"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d appdb" ]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -39,6 +41,7 @@ services:
 
 volumes:
   pgdata:
+
 
 networks:
   devnet:
